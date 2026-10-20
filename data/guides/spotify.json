@@ -1,0 +1,122 @@
+{
+  "id": "spotify",
+  "name": "Spotify",
+  "website": "https://spotify.com",
+  "logo_url": "https://developer-assets.spotifycdn.com/images/home/mobile-banner-confetti.svg",
+  "category": "Other",
+  "difficulty": "Medium",
+  "difficulty_score": 2,
+  "setup_time": "30–60 minutes",
+  "approval_required": true,
+  "approval_time": "Up to 6 weeks",
+  "composio_managed": false,
+  "one_liner": "Setting up OAuth with Spotify involves creating an app in their developer portal and may require approval for production access.",
+  "composio_context": "Developers using Composio need their own OAuth app to access Spotify's API for custom integrations and to manage user authentication.",
+  "timeline": {
+    "registration": "10–15 min",
+    "configuration": "20–30 min",
+    "review": "Up to 6 weeks",
+    "total": "30–60 min + review time"
+  },
+  "prerequisites": [
+    "Spotify Developer Account",
+    "Spotify Premium Account (for some API features)"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Register a New Application",
+      "description": "Log into the Spotify Developer Dashboard and create a new application. Fill in the required details such as app name, description, and redirect URIs.",
+      "url": "https://developer.spotify.com/dashboard/applications",
+      "agent_can_do": false,
+      "agent_note": "The developer must manually register the application and input specific details.",
+      "estimated_time": "10 min",
+      "fields": [
+        "App Name",
+        "App Description",
+        "Redirect URIs"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Configure OAuth Settings",
+      "description": "Set up the OAuth credentials by noting down the Client ID and Client Secret. Configure the redirect URIs and scopes required for your application.",
+      "url": "https://developer.spotify.com/documentation/web-api/concepts/authorization",
+      "agent_can_do": false,
+      "agent_note": "The developer must configure OAuth settings manually.",
+      "estimated_time": "15 min",
+      "fields": [
+        "Client ID",
+        "Client Secret",
+        "Scopes",
+        "Redirect URIs"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Submit for Production Access",
+      "description": "If your app requires more than 25,000 users, submit a request for production access. This involves filling out a form detailing your app's use case and audience.",
+      "url": "https://developer.spotify.com/documentation/web-api/concepts/apps",
+      "agent_can_do": false,
+      "agent_note": "The developer must submit the production access request manually.",
+      "estimated_time": "5 min",
+      "fields": [
+        "Use Case Description",
+        "Target Audience"
+      ]
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "Redirect URI Mismatch",
+      "how_to_resolve": "Ensure that the redirect URI in your application matches exactly with what is registered in the Spotify Developer Dashboard."
+    },
+    {
+      "blocker": "Approval Delays",
+      "how_to_resolve": "Contact Spotify support if the review process exceeds the typical 6-week period."
+    }
+  ],
+  "approval_details": {
+    "is_required": true,
+    "who_reviews": "Spotify Developer Team",
+    "typical_wait": "Up to 6 weeks",
+    "rejection_reasons": [
+      "Insufficient user base",
+      "Non-compliance with Spotify's Developer Terms"
+    ],
+    "tips": [
+      "Ensure your app complies with Spotify's Developer Terms.",
+      "Provide a clear and detailed use case for your app."
+    ]
+  },
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "The agent can assist with researching requirements and navigating the developer portal, but the developer must fill out forms and submit for approval."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://developer.spotify.com/documentation/web-api",
+        "label": "Spotify Developer Documentation",
+        "type": "official"
+      },
+      {
+        "url": "https://community.spotify.com/t5/Spotify-for-Developers/Request-production-access-for-Spotify-OAuth-app/td-p/7312329",
+        "label": "Spotify Community Discussion",
+        "type": "community"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://developer.spotify.com"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "High",
+    "caveats": [
+      "Approval times may vary based on the completeness of the application and current review queue."
+    ],
+    "tested_notes": "The agent verified the OAuth setup process through official Spotify documentation and community discussions."
+  }
+}

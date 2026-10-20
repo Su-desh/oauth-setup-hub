@@ -1,0 +1,166 @@
+{
+  "id": "twitter-x",
+  "name": "Twitter / X",
+  "website": "https://x.com",
+  "logo_url": "https://abs.twimg.com/favicons/twitter.3.ico",
+  "category": "Social Media",
+  "difficulty": "Complex",
+  "difficulty_score": 4,
+  "setup_time": "1–2 hours setup + days to weeks developer account review",
+  "approval_required": true,
+  "approval_time": "Instant to 2+ weeks (unpredictable)",
+  "composio_managed": false,
+  "one_liner": "X's developer platform is functional but opaque — approval times vary widely, and API tier restrictions heavily dictate what your agent can do.",
+  "composio_context": "X (Twitter) is not in Composio's managed OAuth directory. You must register your own developer account and app from day one. Free tier supports basic OAuth 2.0 user login, but reading or posting tweets requires paid tiers ($100+/month).",
+  "timeline": {
+    "registration": "30–60 min",
+    "configuration": "30 min",
+    "review": "Instant to 2+ weeks (unpredictable developer application review)",
+    "total": "1 day to 3+ weeks depending on use case scrutiny and account history"
+  },
+  "prerequisites": [
+    "An X (Twitter) account with a verified phone number and confirmed email",
+    "A clear, detailed use case description for how your agent interacts with the X platform",
+    "Publicly accessible website URL",
+    "Publicly accessible Privacy Policy URL",
+    "Publicly accessible Terms of Service URL",
+    "Credit card / subscription if your agent needs read/write tweet endpoints beyond basic login"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Apply for an X Developer Account",
+      "description": "Navigate to developer.x.com and apply for developer access. You will be prompted to choose a tier (Free, Basic, Pro) and describe your app's core use case in detail. X scrutinizes whether you will display tweets, analyze content, or use AI to generate posts.",
+      "url": "https://developer.x.com/en/portal/petition/essential/basic-info",
+      "agent_can_do": true,
+      "agent_note": "Agent can draft your use case description and policy answers based on your agent's functionality. The actual account application must be submitted by the developer logged into X.",
+      "estimated_time": "20–30 min",
+      "fields": [
+        "Primary intended use case",
+        "Detailed explanation of core app functionality",
+        "Will your app tweet or retweet content?",
+        "Will your app display tweets outside of X?",
+        "Will your app analyze tweet or user data?"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Create a Project and an App inside the Developer Portal",
+      "description": "Once your developer account is active, open the X Developer Portal dashboard. Under the Projects & Apps section, create a new Project, assign a use case category, and create an App nested inside the project. X v2 API endpoints require apps to be inside a Project.",
+      "url": "https://developer.x.com/en/portal/dashboard",
+      "agent_can_do": false,
+      "agent_note": "Requires logged-in session in the X Developer Portal.",
+      "estimated_time": "10 min",
+      "fields": ["Project Name", "Use case category", "Project Description", "App Name"]
+    },
+    {
+      "id": 3,
+      "title": "Configure User Authentication Settings (OAuth 2.0)",
+      "description": "Inside your App Settings, scroll down to 'User authentication settings' and click 'Set up'. Enable OAuth 2.0. Select App Type (choose 'Web App, Automated App or Bot'). Specify app permissions: Read, Read and Write, or Read and Write and Direct Message. Set Authorized Redirect URI and Website URL.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Agent identified the mandatory URL and PKCE requirements in X documentation. Form must be submitted in your portal.",
+      "estimated_time": "15 min",
+      "fields": [
+        "App permissions (Read / Read & Write / Read & Write & DM)",
+        "Type of App (Web App, Automated App or Bot)",
+        "Callback URI / Redirect URL (exact HTTPS match)",
+        "Website URL",
+        "Terms of service URL",
+        "Privacy policy URL"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Generate and securely store OAuth 2.0 Client ID and Client Secret",
+      "description": "After saving authentication settings, X displays your OAuth 2.0 Client ID and Client Secret. Copy the Client Secret immediately — X will not reveal it again. Note: OAuth 2.0 Client Secret is distinct from Consumer API Key / Secret (OAuth 1.0a).",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Store secrets securely in your environment variables. Never commit to source control.",
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 5,
+      "title": "Connect credentials into your Agent / Composio Custom Auth",
+      "description": "In your agent integration configuration, input the Client ID and Client Secret. Configure your OAuth 2.0 flow with PKCE (Proof Key for Code Exchange) with required scopes like 'tweet.read', 'tweet.write', and 'users.read'.",
+      "url": "https://app.composio.dev/integrations",
+      "agent_can_do": true,
+      "agent_note": "Agent can verify scope syntax and format client payload for Composio custom authentication config.",
+      "estimated_time": "5 min",
+      "fields": []
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "Developer account application stalled or rejected",
+      "how_to_resolve": "X uses automated filtering and manual reviews. If rejected, re-apply with a much more concrete, specific description emphasizing how end-users authenticate their own accounts. Avoid vague terms like 'general AI research'."
+    },
+    {
+      "blocker": "Free Tier API limits blocking data access",
+      "how_to_resolve": "The Free tier only supports writing up to 1,500 tweets/month and 1 app. Reading user timelines or searching tweets requires upgrading to the Basic tier ($100/mo) or Pro ($5,000/mo). Plan integration budgeting early."
+    },
+    {
+      "blocker": "OAuth 2.0 PKCE failure (code_challenge_method)",
+      "how_to_resolve": "X OAuth 2.0 strictly requires PKCE. Ensure your authorization request includes code_challenge and code_challenge_method=S256. Composio handles this automatically when configured with OAuth 2.0."
+    },
+    {
+      "blocker": "Mismatched Redirect URI / Callback domain",
+      "how_to_resolve": "X strictly validates redirect URIs. Trailing slashes, subdomain mismatches, or http instead of https (except localhost) will trigger an immediate OAuth handshake error."
+    }
+  ],
+  "approval_details": {
+    "is_required": true,
+    "who_reviews": "X Developer Operations & Policy Team",
+    "typical_wait": "Instant automated approval for basic profiles, up to 2–3 weeks if flagged for manual review",
+    "rejection_reasons": [
+      "Vague or automated-sounding use case descriptions",
+      "Unclear explanation of how user data is stored or processed",
+      "Account flagged for previous policy violations or unverified phone numbers",
+      "Missing or invalid Privacy Policy / Terms of Service URLs"
+    ],
+    "tips": [
+      "Ensure your personal X account is verified, has an active phone number, and a complete profile before applying",
+      "Detail your end-user workflow step-by-step in the application prompt",
+      "For simple 'Sign in with X' social authentication without posting or timeline reading, the Free tier is sufficient"
+    ]
+  },
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "Agent researched X developer portal requirements, API tier limitations, OAuth 2.0 PKCE constraints, and scope definitions. Can draft use case justifications and scope configurations for your application. Account submission, billing upgrades, and portal configuration require human login and verification."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://developer.x.com/en/docs/authentication/oauth-2-0",
+        "label": "X Developer Docs: OAuth 2.0 Authorization Code Flow with PKCE",
+        "type": "official"
+      },
+      {
+        "url": "https://developer.x.com/en/docs/twitter-api/getting-started/about-twitter-api",
+        "label": "X Developer Platform: API Access Tiers",
+        "type": "official"
+      },
+      {
+        "url": "https://developer.x.com/en/portal/dashboard",
+        "label": "X Developer Portal",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://developer.x.com/en/portal/dashboard",
+      "https://developer.x.com/en/docs/authentication/oauth-2-0",
+      "https://developer.x.com/en/docs/twitter-api/getting-started/about-twitter-api"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "Medium",
+    "caveats": [
+      "X Developer API pricing, access tiers, and policy rules change frequently. Check developer.x.com for the most current tier fees before architectural commitments.",
+      "Approval SLAs are not officially published by X; community benchmarks range from instantaneous to multiple weeks."
+    ],
+    "tested_notes": "Agent navigated X developer documentation and verified OAuth 2.0 PKCE parameters, mandatory policy fields, and API tier restrictions. Medium confidence reflects unpredictable developer account approval times and policy shifts."
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "id": "github",
+  "name": "GitHub",
+  "website": "https://github.com",
+  "logo_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+  "category": "Developer Tools",
+  "difficulty": "Easy",
+  "difficulty_score": 1,
+  "setup_time": "15–30 minutes",
+  "approval_required": false,
+  "approval_time": null,
+  "composio_managed": true,
+  "one_liner": "Register a GitHub OAuth App in minutes — no review, instant credentials.",
+  "composio_context": "Composio's managed GitHub integration is great for prototyping. Switch to your own OAuth app for production so your app name appears on the GitHub consent screen and you control your own rate limits and scopes.",
+  "timeline": {
+    "registration": "10–15 min",
+    "configuration": "5 min",
+    "review": null,
+    "total": "~20 min"
+  },
+  "prerequisites": [
+    "A GitHub account",
+    "A publicly accessible redirect URL (localhost works for development)"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Open GitHub Developer Settings",
+      "description": "Navigate to your GitHub account settings, then Developer Settings, then OAuth Apps. Click 'New OAuth App'.",
+      "url": "https://github.com/settings/developers",
+      "agent_can_do": false,
+      "agent_note": "Requires GitHub login. Agent navigated to this page and confirmed the registration form fields listed below.",
+      "estimated_time": "2 min",
+      "fields": ["Application name", "Homepage URL", "Application description (optional)", "Authorization callback URL"]
+    },
+    {
+      "id": 2,
+      "title": "Fill in app details",
+      "description": "Enter your application name (this appears on the GitHub consent screen your users will see), homepage URL, and the OAuth callback URL. For Composio, set the callback URL to your redirect endpoint. Description is optional but recommended.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Requires your account login. These are the fields agent confirmed exist on the registration form.",
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 3,
+      "title": "Register the application and copy Client ID",
+      "description": "Click 'Register application'. Your Client ID is shown immediately on the app detail page. Copy it — you'll need it for Composio.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "You must complete this step. Client ID is shown immediately after registration.",
+      "estimated_time": "2 min",
+      "fields": []
+    },
+    {
+      "id": 4,
+      "title": "Generate Client Secret",
+      "description": "Click 'Generate a new client secret'. Copy it immediately — GitHub only shows the secret once and you cannot retrieve it later. If lost, you must generate a new one.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Copy the secret immediately. It is shown only once.",
+      "estimated_time": "1 min",
+      "fields": []
+    },
+    {
+      "id": 5,
+      "title": "Add credentials to Composio",
+      "description": "In the Composio dashboard, navigate to Integrations → GitHub → Auth Config. Paste your Client ID and Client Secret. Composio will handle token exchange and storage for your users' connections.",
+      "url": "https://app.composio.dev/integrations",
+      "agent_can_do": true,
+      "agent_note": "Agent can guide you through Composio's dashboard configuration steps. The actual credential entry requires your Composio login.",
+      "estimated_time": "5 min",
+      "fields": []
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "Callback URL mismatch",
+      "how_to_resolve": "Ensure the callback URL registered in GitHub exactly matches what your app sends during the OAuth flow, including trailing slashes, http vs https, and port numbers. This is the #1 cause of OAuth errors."
+    },
+    {
+      "blocker": "Client secret lost",
+      "how_to_resolve": "GitHub only shows the secret once at generation time. If lost, go to your OAuth App settings → 'Generate a new client secret'. The old secret is immediately invalidated."
+    },
+    {
+      "blocker": "Rate limit errors at scale",
+      "how_to_resolve": "GitHub's OAuth API has rate limits tied to your app. If you hit limits, you're on the right track — this is a sign you need your own OAuth app (which you're doing)."
+    }
+  ],
+  "approval_details": null,
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "Agent researched GitHub's developer portal, navigated to the OAuth app registration page, and identified all required form fields. All form submissions and credential management require the developer to be logged into their GitHub account. No approval process exists — credentials are instant."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app",
+        "label": "GitHub Docs: Creating an OAuth App",
+        "type": "official"
+      },
+      {
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps",
+        "label": "GitHub Docs: Authorizing OAuth Apps",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://github.com/settings/developers",
+      "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "High",
+    "caveats": [
+      "GitHub may update their UI; field names are accurate as of Oct 2026.",
+      "GitHub Apps (the newer model) offer more granular permissions than OAuth Apps — consider GitHub Apps for new integrations."
+    ],
+    "tested_notes": "Agent navigated to github.com/settings/developers and confirmed the OAuth App registration form fields via official GitHub documentation. No approval step exists — credentials are generated instantly. This is the simplest OAuth setup in this guide library."
+  }
+}

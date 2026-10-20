@@ -1,0 +1,155 @@
+{
+  "id": "slack",
+  "name": "Slack",
+  "website": "https://slack.com",
+  "logo_url": "https://a.slack-edge.com/80588/marketing/img/icons/icon_slack_hash_colored.png",
+  "category": "Communication",
+  "difficulty": "Hard",
+  "difficulty_score": 3,
+  "setup_time": "1–2 hours setup + 2–4 weeks Marketplace review",
+  "approval_required": true,
+  "approval_time": "2–4 weeks (Slack Marketplace listing only)",
+  "composio_managed": true,
+  "one_liner": "Creating a Slack app is straightforward — but listing it publicly on the Slack Marketplace requires 10 active installs and a rigorous review.",
+  "composio_context": "Composio's managed Slack integration handles OAuth during development. When you go to production with your own Slack app, you can distribute it directly to specific workspaces without any review — the Marketplace review is only required if you want to be listed in Slack's public app directory.",
+  "timeline": {
+    "registration": "30–45 min",
+    "configuration": "30–45 min",
+    "review": "2–4 weeks (Marketplace listing only — direct install distribution requires no review)",
+    "total": "~1.5 hours for direct distribution / 3–5 weeks for Marketplace listing"
+  },
+  "prerequisites": [
+    "A Slack account",
+    "A publicly accessible HTTPS redirect URL (HTTP only works for localhost development)",
+    "App icon (512×512px PNG)",
+    "Privacy policy and support URLs",
+    "For Marketplace: app installed on at least 10 active workspaces before submission"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Create a new Slack app",
+      "description": "Go to api.slack.com/apps and click 'Create New App'. Choose 'From scratch' (not from manifest, for clarity). Name your app and select your development workspace.",
+      "url": "https://api.slack.com/apps?new_app=1",
+      "agent_can_do": false,
+      "agent_note": "Requires Slack login. Agent confirmed this is the correct creation URL.",
+      "estimated_time": "5 min",
+      "fields": ["App Name", "Development Slack Workspace"]
+    },
+    {
+      "id": 2,
+      "title": "Configure OAuth & Permissions — add scopes",
+      "description": "Navigate to OAuth & Permissions in the left sidebar. Add your redirect URL. Then add Bot Token Scopes — only add scopes your agent actually needs. Requesting unused scopes is the most common Marketplace rejection reason. Common scopes: channels:read (list channels), chat:write (send messages), users:read (list users).",
+      "url": null,
+      "agent_can_do": true,
+      "agent_note": "Agent can research and recommend the minimum Bot Token Scopes for your AI agent's specific use case. Over-requesting scopes is the #1 reason Marketplace applications are rejected.",
+      "estimated_time": "20–30 min",
+      "fields": ["Redirect URLs", "Bot Token Scopes", "User Token Scopes (only if user-level access needed)"]
+    },
+    {
+      "id": 3,
+      "title": "Configure app display information and branding",
+      "description": "Go to Basic Information → Display Information. Upload your app icon (512×512px PNG), set your app name, short description, and background color. This is what users see in the Slack App Directory and on the install screen.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Agent can help write your app short description and background color hex code.",
+      "estimated_time": "15 min",
+      "fields": ["App name", "Short description (max 150 chars)", "Long description", "App icon (512x512px PNG)", "Background color (hex)"]
+    },
+    {
+      "id": 4,
+      "title": "Install app to workspace and get credentials",
+      "description": "Go to Install App → Install to your workspace. Authorize the app. Copy the Bot User OAuth Token and the Signing Secret from Basic Information. The Signing Secret is used to verify that incoming requests are from Slack.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Requires your Slack admin login. Copy both the token and signing secret.",
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 5,
+      "title": "Enable Distribute App / Marketplace submission (optional)",
+      "description": "To let other workspaces install your app, go to Manage Distribution → Activate Public Distribution. For Marketplace listing specifically: complete the App Review checklist, ensure your app is installed on 10+ active workspaces, then submit. Slack reviews functionality, scope justification, and policy compliance.",
+      "url": "https://api.slack.com/apps",
+      "agent_can_do": true,
+      "agent_note": "Agent can draft your App Directory listing content and help prepare the Marketplace review checklist. You must actually install the app on 10+ workspaces and submit via your Slack account.",
+      "estimated_time": "Weeks of preparation + 2–4 week review wait"
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "10 active workspaces requirement for Marketplace",
+      "how_to_resolve": "You must have genuine installs on 10 active workspaces before submitting to the Marketplace. Build an install page, reach out to contacts, and grow your installs organically. There is no shortcut — Slack verifies this. Note: this requirement only applies to Marketplace listing, not direct distribution."
+    },
+    {
+      "blocker": "Scope rejection during review",
+      "how_to_resolve": "Slack audits every single scope your app requests. Remove any scope you're not actively using. For each remaining scope, be ready to justify it during review. Broad scopes like admin.* or excessive message-reading scopes without clear justification cause immediate rejection."
+    },
+    {
+      "blocker": "HTTP redirect URL blocked",
+      "how_to_resolve": "Slack requires HTTPS redirect URLs for production. For local development, use ngrok to expose localhost over HTTPS. Never use HTTP in production."
+    },
+    {
+      "blocker": "Prohibited use case rejection",
+      "how_to_resolve": "Slack rejects apps that: bulk-export or backup message data, replicate Slack client functionality, embed Slack inside another website, or facilitate mass message deletion. Review Slack's App Directory guidelines before building to ensure your use case is permitted."
+    }
+  ],
+  "approval_details": {
+    "is_required": true,
+    "who_reviews": "Slack's App Review team",
+    "typical_wait": "2–4 weeks",
+    "rejection_reasons": [
+      "Requesting scopes not justified by app functionality",
+      "App not installed on 10+ active workspaces",
+      "Missing privacy policy or support contact URL",
+      "App icon missing or below 512×512px",
+      "Functionality violates Slack's App Directory guidelines (bulk export, etc.)",
+      "App not fully functional or has bugs during review"
+    ],
+    "tips": [
+      "You do NOT need Marketplace listing to use your app with Composio — direct distribution via an install link works for most production use cases",
+      "Start building your install base (10 workspaces) well before submitting — this takes real time",
+      "Use Slack's App Manifest feature to version-control your app configuration in git",
+      "Test your app thoroughly on multiple workspaces before submitting — Slack reviews live functionality"
+    ]
+  },
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "Agent researched Slack's app creation process, OAuth permission model, and Marketplace review requirements. Can recommend minimal Bot Token Scopes for common AI agent use cases (messaging, user lookup, channel management). Can draft App Directory listing descriptions and review checklist content. All form submissions, the install-base-building requirement, and Marketplace submission must be done by the developer with their Slack account."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://api.slack.com/authentication/oauth-v2",
+        "label": "Slack: OAuth 2.0 documentation",
+        "type": "official"
+      },
+      {
+        "url": "https://api.slack.com/distribution",
+        "label": "Slack: App distribution guide",
+        "type": "official"
+      },
+      {
+        "url": "https://api.slack.com/start/distributing/guidelines",
+        "label": "Slack: App Directory guidelines",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://api.slack.com/apps",
+      "https://api.slack.com/authentication/oauth-v2",
+      "https://api.slack.com/distribution",
+      "https://api.slack.com/start/distributing/guidelines"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "High",
+    "caveats": [
+      "The 10 active workspace requirement applies to Marketplace listing only. Direct distribution via an install URL requires no review and no threshold.",
+      "Slack's App Directory guidelines change periodically. Review them at api.slack.com/start/distributing/guidelines before submitting."
+    ],
+    "tested_notes": "Agent confirmed app creation flow from Slack's official documentation at api.slack.com. The 10-workspace requirement is confirmed from api.slack.com/distribution. Scope audit requirements confirmed from distribution guidelines. Key insight: Marketplace listing is optional — most Composio-based apps can use direct distribution without any review."
+  }
+}

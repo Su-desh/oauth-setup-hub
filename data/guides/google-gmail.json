@@ -1,0 +1,192 @@
+{
+  "id": "google-gmail",
+  "name": "Google (Gmail / Workspace)",
+  "website": "https://google.com",
+  "logo_url": "https://www.google.com/favicon.ico",
+  "category": "Productivity",
+  "difficulty": "Hard",
+  "difficulty_score": 4,
+  "setup_time": "2–4 hours setup + 1–4 weeks verification",
+  "approval_required": true,
+  "approval_time": "1–4 weeks (sensitive scopes) — ongoing CASA audit (restricted scopes)",
+  "composio_managed": true,
+  "one_liner": "The most complex OAuth setup in the ecosystem — Google's verification process is thorough and can take weeks for sensitive Gmail or Drive scopes.",
+  "composio_context": "Composio's managed Google integration covers common scopes for prototyping. For production, you need your own Google Cloud OAuth app so your company name appears on Google's consent screen. If you need Gmail send/read or Drive access, budget 2–4 weeks for Google's OAuth verification process.",
+  "timeline": {
+    "registration": "30–60 min",
+    "configuration": "1–2 hours",
+    "review": "1–4 weeks (sensitive scopes) / CASA audit — ongoing annually (restricted scopes)",
+    "total": "2–5 weeks for apps requesting sensitive or restricted scopes"
+  },
+  "prerequisites": [
+    "A Google account",
+    "A Google Cloud project (free to create at console.cloud.google.com)",
+    "A verified domain in Google Search Console — your app homepage must be on this domain",
+    "Publicly accessible privacy policy URL hosted on your verified domain",
+    "Homepage URL on your verified domain",
+    "For sensitive scopes: a YouTube demo video showing the OAuth consent flow and data usage",
+    "For restricted scopes: CASA security assessment by an authorized lab (costs $75–$300+, takes 2–6 weeks)"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Create a Google Cloud project",
+      "description": "Go to Google Cloud Console and create a new project. This is the container for your OAuth app, APIs, and credentials. If you already have a GCP project, you can use it.",
+      "url": "https://console.cloud.google.com/projectcreate",
+      "agent_can_do": false,
+      "agent_note": "Requires Google account login. Project creation is straightforward.",
+      "estimated_time": "5 min",
+      "fields": ["Project name", "Organization (optional)", "Location (optional)"]
+    },
+    {
+      "id": 2,
+      "title": "Enable the Google APIs you need",
+      "description": "In API Library, search for and enable the specific Google APIs your agent uses: Gmail API for email, Google Drive API for files, Google Calendar API for events, etc. Only enable what you actually need.",
+      "url": "https://console.cloud.google.com/apis/library",
+      "agent_can_do": true,
+      "agent_note": "Agent can identify which Google APIs correspond to the scopes your agent needs and provide the exact API names to enable.",
+      "estimated_time": "10 min",
+      "fields": []
+    },
+    {
+      "id": 3,
+      "title": "Configure OAuth Consent Screen",
+      "description": "This is the most critical step. Navigate to APIs & Services → OAuth consent screen. Choose 'External' for apps available to anyone (most cases). Fill in all fields carefully — your app name, logos, and domain will appear on the Google consent screen your users see. Your homepage must be on a domain you own and have verified in Google Search Console.",
+      "url": "https://console.cloud.google.com/apis/credentials/consent",
+      "agent_can_do": false,
+      "agent_note": "Agent confirmed these are the exact fields required. Domain verification in Google Search Console must be done before this step.",
+      "estimated_time": "30–60 min",
+      "fields": [
+        "App name",
+        "User support email",
+        "App logo (120x120px minimum)",
+        "App home page URL (must be on verified domain)",
+        "App privacy policy link (must be on verified domain)",
+        "App terms of service link (optional but recommended)",
+        "Authorized domains",
+        "Developer contact email addresses"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Add OAuth scopes",
+      "description": "Add only the scopes you genuinely need. Google categorizes scopes: Non-sensitive (no review required), Sensitive (requires verification, 1–4 week review), Restricted (requires CASA security audit, annual). Requesting fewer and less sensitive scopes dramatically reduces verification burden.",
+      "url": null,
+      "agent_can_do": true,
+      "agent_note": "Agent can research and recommend the minimum scopes for your use case. Example: for an AI email assistant, gmail.send (send only) is less sensitive than gmail.readonly (read all email) — request only what you need.",
+      "estimated_time": "20 min",
+      "fields": []
+    },
+    {
+      "id": 5,
+      "title": "Add test users",
+      "description": "Before publishing, add up to 100 test user email addresses. Your app works for these users without verification — ideal for internal testing and early access.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Add your own email and team members as test users during development.",
+      "estimated_time": "5 min",
+      "fields": ["Test user email addresses (up to 100)"]
+    },
+    {
+      "id": 6,
+      "title": "Create OAuth 2.0 Credentials",
+      "description": "Navigate to APIs & Services → Credentials → Create Credentials → OAuth client ID. Select 'Web application'. Add your authorized redirect URIs. Copy the Client ID and Client Secret.",
+      "url": "https://console.cloud.google.com/apis/credentials",
+      "agent_can_do": false,
+      "agent_note": "Requires your Google account. Set authorized redirect URIs to match your Composio integration callback URL exactly.",
+      "estimated_time": "10 min",
+      "fields": ["Application type: Web application", "Name", "Authorized JavaScript origins", "Authorized redirect URIs"]
+    },
+    {
+      "id": 7,
+      "title": "Submit for verification (sensitive/restricted scopes)",
+      "description": "If your app requests sensitive or restricted scopes and you want more than 100 users, you must submit for verification. Prepare: scope justifications (explain why each scope is needed), privacy policy, homepage on verified domain. For sensitive scopes, record a demo video on YouTube showing the OAuth flow and data usage. For restricted scopes, engage a CASA-authorized security assessment lab first.",
+      "url": null,
+      "agent_can_do": true,
+      "agent_note": "Agent can help draft scope justification text for each scope and outline exactly what your demo video should show. CASA lab engagement and the verification submission itself require the developer.",
+      "estimated_time": "1–2 hours to prepare, then 1–4 week wait"
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "Domain not verified in Google Search Console",
+      "how_to_resolve": "This is a hard prerequisite for the verification process. Go to search.google.com/search-console and verify your domain before configuring the consent screen. DNS verification is the most reliable method."
+    },
+    {
+      "blocker": "App stuck in 'Testing' mode (100 user limit)",
+      "how_to_resolve": "Your app stays in Testing mode (max 100 users, users see 'Unverified app' warning) until you submit for verification. This is intentional — test with up to 100 users, then submit when ready for production."
+    },
+    {
+      "blocker": "Sensitive scope submission rejected",
+      "how_to_resolve": "Google rejects apps that request more than the minimum needed scopes. Remove unnecessary scopes, provide clear justification for each remaining scope, and ensure your demo video clearly shows the data being used in-app."
+    },
+    {
+      "blocker": "Restricted scope requires CASA audit",
+      "how_to_resolve": "Certain Gmail and Drive scopes are classified 'restricted' and require a third-party CASA (Cloud Application Security Assessment) by a Google-authorized lab. This involves costs and takes time — identify whether your scopes are restricted early at developers.google.com/identity/protocols/oauth2/scopes and plan accordingly."
+    },
+    {
+      "blocker": "Demo video requirements not met",
+      "how_to_resolve": "The video must show: your app homepage, navigating to the OAuth consent flow, the Google consent screen with your app name, and how the authorized data is used within your app. Upload as unlisted YouTube video. Keep under 5 minutes."
+    }
+  ],
+  "approval_details": {
+    "is_required": true,
+    "who_reviews": "Google's Trust & Safety team",
+    "typical_wait": "1–4 weeks for sensitive scopes; CASA audit timeline varies (2–6 weeks) for restricted scopes",
+    "rejection_reasons": [
+      "Requesting scopes beyond what's necessary for core functionality",
+      "Missing or broken privacy policy (must be on verified domain)",
+      "Homepage not on a verified domain",
+      "Demo video doesn't clearly show how user data is used in the app",
+      "App description doesn't adequately justify the scope requirements",
+      "App fails security assessment for restricted scopes"
+    ],
+    "tips": [
+      "Start with the absolute minimum scopes — you can request additional scopes through incremental authorization as users engage with features",
+      "Get domain verification done on day 1 — it's required for everything downstream",
+      "Non-sensitive scopes (like profile, email, openid) don't require verification — these are fine for basic OAuth login",
+      "For AI email agents, prefer gmail.send over broader scopes if you only need to send email",
+      "The CASA audit is annual and costs money — factor this into your roadmap before requesting restricted scopes"
+    ]
+  },
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "Agent researched Google's OAuth verification requirements in depth, identified required scopes for common Gmail and Drive use cases, and can draft scope justification text for the verification submission. Agent can also outline what your demo video must show. All form submissions, domain verification, consent screen configuration, and CASA lab engagement require the developer. The CASA security audit requires a third-party authorized lab — the agent cannot perform this."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://support.google.com/cloud/answer/9110914",
+        "label": "Google: OAuth app verification FAQ",
+        "type": "official"
+      },
+      {
+        "url": "https://developers.google.com/identity/protocols/oauth2",
+        "label": "Google Identity: OAuth 2.0 overview",
+        "type": "official"
+      },
+      {
+        "url": "https://developers.google.com/identity/protocols/oauth2/scopes",
+        "label": "Google: OAuth 2.0 Scopes Reference",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://console.cloud.google.com/apis/credentials/consent",
+      "https://support.google.com/cloud/answer/9110914",
+      "https://developers.google.com/identity/protocols/oauth2",
+      "https://developers.google.com/identity/protocols/oauth2/scopes"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "High",
+    "caveats": [
+      "CASA audit costs vary by lab and scope complexity. Google's verification review times are estimates — actual times vary based on submission queue and completeness.",
+      "The list of scopes classified as 'sensitive' vs 'restricted' changes. Always verify current scope classification at developers.google.com/identity/protocols/oauth2/scopes before building.",
+      "Google periodically updates their OAuth verification requirements. Check the verification FAQ before submitting."
+    ],
+    "tested_notes": "Agent navigated Google Cloud Console structure and confirmed consent screen fields from official documentation. Scope classifications (non-sensitive, sensitive, restricted) confirmed from Google's OAuth scope reference. CASA audit requirement for restricted scopes confirmed from Google's verification FAQ. This is the most complex guide in the library — allocate significant time."
+  }
+}

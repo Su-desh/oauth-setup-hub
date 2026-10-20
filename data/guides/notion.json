@@ -1,0 +1,156 @@
+{
+  "id": "notion",
+  "name": "Notion",
+  "website": "https://www.notion.so",
+  "logo_url": "https://www.notion.so/front-static/favicon.ico",
+  "category": "Productivity",
+  "difficulty": "Medium",
+  "difficulty_score": 2,
+  "setup_time": "30–60 minutes",
+  "approval_required": true,
+  "approval_time": "1–3 business days (public integrations only)",
+  "composio_managed": true,
+  "one_liner": "Build a Notion integration quickly — internal ones are instant, public ones need a brief manual review.",
+  "composio_context": "Composio supports Notion out of the box for prototyping. For production, register your own integration so your app name appears on the Notion authorization screen and you can request only the capabilities your agent actually needs.",
+  "timeline": {
+    "registration": "15–20 min",
+    "configuration": "15 min",
+    "review": "1–3 business days (public integrations only — internal is instant)",
+    "total": "~20 min for internal / 2–4 days for public"
+  },
+  "prerequisites": [
+    "A Notion account",
+    "A publicly accessible redirect URL",
+    "Privacy policy URL (required for public integrations)",
+    "App logo image (recommended for public integrations)",
+    "Company website URL (for public integrations)"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Open the Notion Integrations dashboard",
+      "description": "Go to notion.so/my-integrations. This is the central place to manage all your Notion integrations. Click '+ New integration'.",
+      "url": "https://www.notion.so/my-integrations",
+      "agent_can_do": false,
+      "agent_note": "Requires Notion login. Agent confirmed this is the correct URL for integration creation.",
+      "estimated_time": "2 min",
+      "fields": []
+    },
+    {
+      "id": 2,
+      "title": "Choose Integration type: Internal or Public",
+      "description": "This is the most important decision. Choose 'Internal' if your integration only works within your own Notion workspace (instant, no review). Choose 'Public' if you want users from other Notion workspaces to authorize your integration (requires Notion's review). For AI agents serving multiple customers, you need Public.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Agent confirmed both paths exist and their requirements differ significantly.",
+      "estimated_time": "5 min",
+      "fields": ["Integration name", "Associated workspace", "Integration type: Internal / Public", "Logo (optional for internal, recommended for public)"]
+    },
+    {
+      "id": 3,
+      "title": "Configure capabilities",
+      "description": "Select only the capabilities your agent needs: Read content, Update content, Insert content, Read comments, Create comments. Less is better — unnecessary capabilities increase review scrutiny.",
+      "url": null,
+      "agent_can_do": true,
+      "agent_note": "Agent can research and recommend the minimum required Notion capabilities for your AI agent's specific use case.",
+      "estimated_time": "5 min",
+      "fields": ["Read content", "Update content", "Insert content", "Read comments", "Create comments", "Read user information"]
+    },
+    {
+      "id": 4,
+      "title": "Configure OAuth settings (Public integrations only)",
+      "description": "For public integrations, you must add OAuth redirect URIs and fill in your company information: company name, website, privacy policy URL, support email, and a tagline describing your integration.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Requires your account. Agent can help draft tagline and description copy.",
+      "estimated_time": "10 min",
+      "fields": ["Redirect URIs", "Company name", "Website", "Privacy policy URL", "Support email", "Tagline"]
+    },
+    {
+      "id": 5,
+      "title": "Copy integration credentials",
+      "description": "Copy the OAuth client ID and client secret from the integration settings page. These are your credentials for Composio.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Credentials are shown in the integration settings. Copy both immediately.",
+      "estimated_time": "2 min",
+      "fields": []
+    },
+    {
+      "id": 6,
+      "title": "Submit for review (public integrations only)",
+      "description": "Click 'Submit for review'. Notion's team manually reviews public integrations. They check that your privacy policy is live, your integration description is clear, and you're requesting appropriate capabilities. Typical turnaround is 1–3 business days.",
+      "url": null,
+      "agent_can_do": true,
+      "agent_note": "Agent can draft your integration description and review submission notes. The actual submission requires your Notion account login.",
+      "estimated_time": "5 min (prep) + 1–3 day wait"
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "Choosing Internal when you need Public",
+      "how_to_resolve": "Internal integrations can only be added to workspaces you own or are a member of. If your AI agent users are from different Notion workspaces, you need a Public integration. You cannot change type after creation — you'd need to create a new integration."
+    },
+    {
+      "blocker": "Review rejection due to missing or broken privacy policy",
+      "how_to_resolve": "Notion requires a live, publicly accessible privacy policy URL for public integrations. The link must resolve to a real page. Use a privacy policy generator (like Termly or iubenda) for early-stage projects."
+    },
+    {
+      "blocker": "Review delayed due to incomplete submission",
+      "how_to_resolve": "Ensure your integration name, description, and all URLs are professional and complete before submitting. Incomplete submissions are rejected immediately, resetting your wait time."
+    },
+    {
+      "blocker": "Requesting excessive capabilities",
+      "how_to_resolve": "Only request capabilities your agent genuinely uses. Requesting 'Read user information' when your agent only reads pages is a flag during review."
+    }
+  ],
+  "approval_details": {
+    "is_required": true,
+    "who_reviews": "Notion's integration review team (manual review)",
+    "typical_wait": "1–3 business days",
+    "rejection_reasons": [
+      "Missing or broken privacy policy URL",
+      "Unclear integration purpose or description",
+      "Requesting capabilities beyond what the integration needs",
+      "Integration name or description violates Notion's brand guidelines"
+    ],
+    "tips": [
+      "Internal integrations have zero review — use internal for development and testing",
+      "Keep your integration description clear and specific about what your AI agent does with Notion data",
+      "Only request capabilities your agent actually uses — less is more during review",
+      "Have a live privacy policy page ready before submitting — it must be accessible"
+    ]
+  },
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "Agent researched Notion's integration documentation and navigated the integrations portal at notion.so/my-integrations. Can draft integration descriptions, taglines, and review submission content. Can recommend appropriate capability selections for common AI agent use cases. All form submissions and the review submission itself require the developer's Notion account."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://developers.notion.com/docs/authorization",
+        "label": "Notion Developer Docs: Authorization",
+        "type": "official"
+      },
+      {
+        "url": "https://developers.notion.com/docs/getting-started",
+        "label": "Notion Developer Docs: Getting Started",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://www.notion.so/my-integrations",
+      "https://developers.notion.com/docs/authorization"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "High",
+    "caveats": [
+      "Review times can vary; 1–3 days is typical but not guaranteed — Notion doesn't publish official SLAs.",
+      "Notion's integration review requirements may evolve. Check developers.notion.com for the latest requirements before submitting."
+    ],
+    "tested_notes": "Agent navigated Notion developer docs and the integration portal structure. Internal vs. public distinction confirmed from official documentation. Public review requirement and submission flow confirmed from Notion's authorization documentation."
+  }
+}

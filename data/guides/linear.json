@@ -1,0 +1,134 @@
+{
+  "id": "linear",
+  "name": "Linear",
+  "website": "https://linear.app",
+  "logo_url": "https://linear.com/favicon.ico",
+  "category": "Third-Party Integration",
+  "difficulty": "Medium",
+  "difficulty_score": 3,
+  "setup_time": "30–60 minutes",
+  "approval_required": false,
+  "approval_time": null,
+  "composio_managed": false,
+  "one_liner": "OAuth app registration and setup guide for Linear.",
+  "composio_context": "When building an agent with Composio, connect your own Linear OAuth credentials for white-label user consent screens and custom scope controls.",
+  "timeline": {
+    "registration": "5–10 min",
+    "configuration": "10 min",
+    "review": null,
+    "total": "~20 min"
+  },
+  "prerequisites": [
+    "Developer account",
+    "Redirect callback URL"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Step 1",
+      "description": "",
+      "url": "https://linear.app/login",
+      "agent_can_do": false,
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 2,
+      "title": "Step 2",
+      "description": "",
+      "url": "https://linear.app/settings/api/applications",
+      "agent_can_do": false,
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 3,
+      "title": "Step 3",
+      "description": "",
+      "agent_can_do": false,
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 4,
+      "title": "Step 4",
+      "description": "",
+      "agent_can_do": false,
+      "estimated_time": "5 min",
+      "fields": [
+        {
+          "name": "Callback URLs",
+          "description": "Add the URLs where Linear will redirect after authentication. Example: https://api.nango.dev/oauth/callback"
+        },
+        {
+          "name": "Public",
+          "description": "Toggle this switch to allow installation in other workspaces."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Step 5",
+      "description": "",
+      "agent_can_do": false,
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 6,
+      "title": "Step 6",
+      "description": "",
+      "agent_can_do": false,
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 7,
+      "title": "Step 7",
+      "description": "",
+      "agent_can_do": false,
+      "estimated_time": "5 min",
+      "fields": []
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "Callback URL mismatch",
+      "how_to_resolve": "Ensure registered callback URLs match exact redirect URI used in OAuth handshake."
+    },
+    {
+      "blocker": "Client secret lost",
+      "how_to_resolve": "Regenerate secret in Linear developer settings."
+    }
+  ],
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "Agent researched Linear developer documentation and extracted OAuth parameters. Developer login is required to register app."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://linear.app/developers/oauth-2-0-authentication",
+        "label": "Linear OAuth 2.0 authentication documentation",
+        "type": "official"
+      },
+      {
+        "url": "https://nango.dev/docs/api-integrations/linear/how-to-register-your-own-linear-api-oauth-app",
+        "label": "Nango Docs - How to register your own Linear OAuth app",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://linear.app/developers/oauth-2-0-authentication"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "High",
+    "caveats": [
+      "Direct client-side OAuth requires PKCE; server web apps use standard code flow."
+    ],
+    "tested_notes": "Agent verified Linear OAuth 2.0 developer documentation and application registration fields."
+  }
+}

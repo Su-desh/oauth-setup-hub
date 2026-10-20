@@ -1,0 +1,185 @@
+{
+  "id": "salesforce",
+  "name": "Salesforce",
+  "website": "https://salesforce.com",
+  "logo_url": "https://www.salesforce.com/favicon.ico",
+  "category": "CRM & Enterprise",
+  "difficulty": "Complex",
+  "difficulty_score": 5,
+  "setup_time": "2–4 hours setup + 4–12 weeks AppExchange security review",
+  "approval_required": true,
+  "approval_time": "4–12 weeks (for AppExchange commercial distribution only; instant for internal/direct orgs)",
+  "composio_managed": false,
+  "one_liner": "Salesforce Connected App creation is self-serve in minutes — but commercial multi-tenant distribution requires an exhaustive AppExchange security review.",
+  "composio_context": "Salesforce is not in Composio's managed OAuth directory. You must configure a Connected App (or External Client App) in your Salesforce developer org. For private internal agent integrations, no review is needed. For commercial multi-tenant distribution across external Salesforce customer orgs, budget 4–12 weeks for the AppExchange Security Review.",
+  "timeline": {
+    "registration": "45–90 min",
+    "configuration": "1–2 hours",
+    "review": "4–12 weeks (AppExchange Security Review only; 0 days for internal org use)",
+    "total": "~2 hours for internal integrations / 6–14 weeks for commercial AppExchange distribution"
+  },
+  "prerequisites": [
+    "Salesforce Developer Edition Org (free registration at developer.salesforce.com/signup)",
+    "System Administrator permissions in your Salesforce environment",
+    "Secure HTTPS Callback / Redirect URL",
+    "For AppExchange distribution: Salesforce Partner Community account, Security Review fee ($2,550 for commercial apps, free for certain free apps), static code scan results (Checkmarx/CodeScan), and pen-testing compliance"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Create a Salesforce Developer Edition Org",
+      "description": "Sign up for a free, persistent Salesforce Developer Edition organization at developer.salesforce.com/signup. This acts as your development sandbox and Connected App packaging org.",
+      "url": "https://developer.salesforce.com/signup",
+      "agent_can_do": false,
+      "agent_note": "Requires human signup with developer profile information.",
+      "estimated_time": "10 min",
+      "fields": ["First Name", "Last Name", "Email", "Role", "Company", "Country", "Username (email format)"]
+    },
+    {
+      "id": 2,
+      "title": "Navigate to App Manager in Salesforce Setup",
+      "description": "Log into your Salesforce Org, click the Setup gear icon in the top right, search for 'App Manager' in Quick Find, and click 'New Connected App' (or 'New External Client App' for modern Salesforce orgs).",
+      "url": "https://login.salesforce.com",
+      "agent_can_do": false,
+      "agent_note": "Requires logged-in admin access to Salesforce setup console.",
+      "estimated_time": "5 min",
+      "fields": []
+    },
+    {
+      "id": 3,
+      "title": "Configure Connected App Basic Information",
+      "description": "Provide Connected App Name, API Name (auto-generated from app name), and Contact Email. Optionally provide logo and icon URLs for custom branding during end-user OAuth consent screens.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Agent verified the required setup fields.",
+      "estimated_time": "10 min",
+      "fields": [
+        "Connected App Name",
+        "API Name",
+        "Contact Email",
+        "Logo Image URL (optional)",
+        "Icon URL (optional)",
+        "Description"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Enable OAuth Settings & Scopes",
+      "description": "Check 'Enable OAuth Settings'. Enter your Callback URL (Composio redirect URI). In Selected OAuth Scopes, add only the minimal required scopes: 'Manage user data via APIs (api)', 'Perform requests at any time (refresh_token, offline_access)', and optionally 'Access unique user identifier (openid)'. Enable PKCE extension if building public or single-page applications.",
+      "url": null,
+      "agent_can_do": true,
+      "agent_note": "Agent can recommend minimal scope bundles for CRM operations (leads, contacts, opportunities) without over-requesting permissions.",
+      "estimated_time": "20–30 min",
+      "fields": [
+        "Enable OAuth Settings checkbox",
+        "Callback URL (HTTPS)",
+        "Selected OAuth Scopes (api, refresh_token, openid)",
+        "Require Proof Key for Code Exchange (PKCE) extension",
+        "Require Secret for Web Server Flow"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Configure OAuth Policies (Permitted Users & IP Relaxation)",
+      "description": "Click Save, then click Manage at the top of the Connected App page, and click 'Edit Policies'. Under OAuth Policies, set Permitted Users to 'All users may self-authorize' (for general end-user authentication) or 'Admin approved users are pre-authorized' (for strict corporate governance). Set IP Relaxation to 'Relax IP restrictions' if your agent runs across cloud IPs.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Crucial step: incorrect policy configuration is the #1 cause of 'OAUTH_APP_ACCESS_DENIED' errors in Salesforce.",
+      "estimated_time": "15 min",
+      "fields": ["Permitted Users", "IP Relaxation", "Refresh Token Policy"]
+    },
+    {
+      "id": 6,
+      "title": "Retrieve Consumer Key (Client ID) & Consumer Secret",
+      "description": "Go back to App Manager → your Connected App → View. Under API (Enable OAuth Settings), click 'Manage Consumer Details'. Complete two-factor verification to reveal your Consumer Key and Consumer Secret. Allow 2–10 minutes for Salesforce global metadata propagation before executing OAuth requests.",
+      "url": null,
+      "agent_can_do": false,
+      "agent_note": "Copy credentials securely into your Composio or application config.",
+      "estimated_time": "10 min",
+      "fields": []
+    },
+    {
+      "id": 7,
+      "title": "Pass AppExchange Security Review (Commercial Distribution Only)",
+      "description": "If you plan to package your agent for general customer install via the Salesforce AppExchange, join the Partner Community, run Checkmarx static code analysis, resolve false positives with security documentation, submit a network penetration test report, and pay the review fee. Reviews take 4–12 weeks.",
+      "url": "https://partners.salesforce.com/s/education/general/Security_Review",
+      "agent_can_do": true,
+      "agent_note": "Agent can analyze static code scanner reports and review submission checklists. The technical remediation and partner contracts require developer/engineering teams.",
+      "estimated_time": "4–12 weeks audit process"
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "Salesforce Connected App metadata propagation delay",
+      "how_to_resolve": "Salesforce takes 2 to 10 minutes to propagate new Connected App credentials globally across its cluster. If you get 'invalid_client_id' immediately after saving, wait 10 minutes and retry before modifying settings."
+    },
+    {
+      "blocker": "Admin approval blocker ('error=access_denied&error_description=user+is+not+admin+approved')",
+      "how_to_resolve": "If Permitted Users is set to 'Admin approved users are pre-authorized', any user without explicit Connected App permission set assignment will fail OAuth. Switch to 'All users may self-authorize' under Manage Connected App policies for general user consent."
+    },
+    {
+      "blocker": "AppExchange Security Review rejection (SOQL injection or hardcoded secrets)",
+      "how_to_resolve": "Review the automated Checkmarx scanner report thoroughly before human review. Sanitize all dynamic SOQL queries with String.escapeSingleQuotes(), enforce FLS (Field-Level Security), and never store API secrets in Apex code."
+    },
+    {
+      "blocker": "Over-privileged 'full' scope rejected by customer InfoSec teams",
+      "how_to_resolve": "Never request the 'full' scope. Enterprise Salesforce administrators routinely reject or blacklist connected apps requesting 'full'. Limit scopes to 'api' and 'refresh_token'."
+    }
+  ],
+  "approval_details": {
+    "is_required": true,
+    "who_reviews": "Salesforce Product Security Team (AppExchange Review)",
+    "typical_wait": "4–12 weeks depending on queue depth and remediation iterations",
+    "rejection_reasons": [
+      "Unremediated critical or high findings in Checkmarx/Chimera static code scans",
+      "Flaws in CRUD / FLS (Field Level Security) enforcement across custom objects",
+      "SOQL / SOSL injection vulnerabilities in dynamic queries",
+      "Insufficient documentation explaining security false positives or cryptographic key storage",
+      "Requesting broad scopes without functional product necessity"
+    ],
+    "tips": [
+      "For internal company agents or direct enterprise contracts with connected app credentials, you can completely bypass the AppExchange security review",
+      "Run the free Chimera/Checkmarx portal scan on your package early in development to catch architectural issues",
+      "Prepare a comprehensive Security Review User Guide showing security test credentials and workflow architecture"
+    ]
+  },
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "Agent researched Salesforce Connected App architecture, OAuth 2.0 policy options, and AppExchange security review criteria. Can recommend minimal scopes (api, refresh_token, openid) and advise on Permitted Users policy settings. Developer org provisioning, portal configuration, and AppExchange security submissions require human admin privileges and enterprise compliance approvals."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://help.salesforce.com/s/articleView?id=sf.connected_app_create.htm",
+        "label": "Salesforce Help: Create a Connected App",
+        "type": "official"
+      },
+      {
+        "url": "https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_scopes.htm",
+        "label": "Salesforce Help: Scope Parameter Values",
+        "type": "official"
+      },
+      {
+        "url": "https://partners.salesforce.com/s/education/general/Security_Review",
+        "label": "Salesforce Partner Portal: Security Review Overview",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://login.salesforce.com",
+      "https://help.salesforce.com/s/articleView?id=sf.connected_app_create.htm",
+      "https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_scopes.htm",
+      "https://partners.salesforce.com/s/education/general/Security_Review"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "High",
+    "caveats": [
+      "Salesforce is introducing External Client Apps (ECAs) as the successor to Connected Apps for second-generation packaging; Connected Apps remain fully supported for OAuth integrations.",
+      "AppExchange security review fees ($2,550 for commercial apps) and submission timelines fluctuate based on partner tiers."
+    ],
+    "tested_notes": "Agent navigated official Salesforce developer documentation, verified Connected App OAuth policies, propagation latency behaviors, and AppExchange security review guidelines. Connected app setup takes ~2 hours; commercial multi-tenant distribution requires months of security audit."
+  }
+}
