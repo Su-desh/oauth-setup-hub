@@ -10,6 +10,9 @@ function getOpenAIClient(): OpenAI {
   return new OpenAI({ apiKey, timeout: 90000 });
 }
 
+// Hardcoded model: OpenAI's latest Terra capability tier
+const TERRA_MODEL = 'gpt-5.6-terra';
+
 function getTavilyClient() {
   const apiKey = process.env.TAVILY_API_KEY;
   if (!apiKey) throw new Error('TAVILY_API_KEY is not configured in environment variables');
@@ -256,7 +259,8 @@ export async function generateGuide(
     iterations++;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: TERRA_MODEL,
+      reasoning_effort: 'none',
       messages,
       tools,
       tool_choice: 'auto',
@@ -328,7 +332,8 @@ export async function generateGuide(
   });
 
   const finalResponse = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: TERRA_MODEL,
+    reasoning_effort: 'none',
     messages,
     temperature: 0.2,
   });
@@ -362,7 +367,8 @@ export async function identifyApp(input: string): Promise<{
 }> {
   const openai = getOpenAIClient();
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: TERRA_MODEL,
+    reasoning_effort: 'none',
     messages: [
       {
         role: 'system',

@@ -1,0 +1,184 @@
+{
+  "id": "stripe",
+  "name": "Stripe",
+  "website": "https://stripe.com",
+  "logo_url": "https://stripe.com/favicon.ico",
+  "category": "Developer Tools",
+  "difficulty": "Medium",
+  "difficulty_score": 2,
+  "setup_time": "20–45 minutes",
+  "approval_required": false,
+  "approval_time": null,
+  "composio_managed": false,
+  "one_liner": "Create a Stripe Connect platform, configure OAuth redirect URIs, and use the platform client ID to authorize connected Stripe accounts.",
+  "composio_context": "A Composio developer needs their own Stripe Connect OAuth application when moving beyond Composio-managed credentials, so connected accounts authorize the developer's own Stripe platform and OAuth redirect flow.",
+  "timeline": {
+    "registration": "5–10 min",
+    "configuration": "15–30 min",
+    "review": null,
+    "total": "~20–45 min"
+  },
+  "prerequisites": [
+    "A Stripe account with access to the Stripe Dashboard.",
+    "A Stripe Connect platform configuration; OAuth is part of Stripe Connect.",
+    "A production HTTPS redirect URI for live-mode OAuth use.",
+    "A clear understanding of whether the integration needs Standard connected accounts, because Stripe OAuth is used to connect Standard accounts."
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Create or access a Stripe account and open Connect settings",
+      "description": "Sign in to the Stripe Dashboard and configure Stripe Connect for your platform. Stripe Connect is the product area that provides OAuth for connecting Standard Stripe accounts. The Dashboard may require you to complete account/business activation before live payments or live-mode capabilities are available.",
+      "url": "https://dashboard.stripe.com/settings/connect",
+      "agent_can_do": false,
+      "agent_note": "An agent can explain the required configuration and help prepare values, but a human must sign in, accept Stripe terms, and make account-level changes.",
+      "estimated_time": "5–15 min",
+      "fields": [
+        "Platform profile/business details",
+        "Support contact information",
+        "Connect platform settings"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Configure OAuth redirect URI(s) in Connect settings",
+      "description": "In the Stripe Dashboard's Connect settings, add the redirect URI used by your application. Stripe redirects the user back to this URI after authorization. The URI must exactly match the redirect_uri supplied in the OAuth authorization request. Use HTTPS in production and keep separate test and production configuration where applicable.",
+      "url": "https://dashboard.stripe.com/settings/connect",
+      "agent_can_do": false,
+      "agent_note": "An agent can generate and validate a proposed callback URL, but the developer must enter it in the authenticated Stripe Dashboard.",
+      "estimated_time": "5–10 min",
+      "fields": [
+        "Redirect URI"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Copy the Connect client ID and secure platform credentials",
+      "description": "Retrieve the Connect client ID from the Stripe Dashboard. Use this client ID as client_id in the OAuth authorization URL. Keep your Stripe secret key server-side; it is used when exchanging the authorization code at Stripe's OAuth token endpoint. Do not expose secret keys in browser or mobile client code.",
+      "url": "https://dashboard.stripe.com/settings/connect",
+      "agent_can_do": false,
+      "agent_note": "An agent can provide implementation guidance and code structure, but cannot safely retrieve or store secret credentials.",
+      "estimated_time": "5 min",
+      "fields": [
+        "Client ID",
+        "Publishable key",
+        "Secret key"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Build the Stripe OAuth authorization request",
+      "description": "Redirect the Stripe account holder to Stripe's Connect OAuth authorization endpoint with response_type=code, your client_id, and the exact registered redirect_uri. Include state to bind the callback to the initiating user/session and protect against CSRF. Request read_write only if the integration needs write access; otherwise use read_only.",
+      "url": "https://docs.stripe.com/connect/oauth-reference",
+      "agent_can_do": true,
+      "agent_note": "An agent can generate the authorization URL, state-handling design, and server-side callback code. A developer must deploy and test it.",
+      "estimated_time": "5–10 min",
+      "fields": [
+        "response_type",
+        "client_id",
+        "scope",
+        "redirect_uri",
+        "state",
+        "stripe_user[email]"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Exchange the authorization code on your server",
+      "description": "After Stripe redirects to your callback, validate state and exchange the returned code at Stripe's OAuth token endpoint using your platform secret key. Store the returned connected-account identifier and access credentials securely, associated with the user or tenant that completed the connection. Handle OAuth errors returned in the callback.",
+      "url": "https://docs.stripe.com/connect/oauth-reference",
+      "agent_can_do": true,
+      "agent_note": "An agent can draft server-side token-exchange logic and error handling. The developer must deploy it, protect secrets, and validate behavior in their environment.",
+      "estimated_time": "10–15 min",
+      "fields": [
+        "client_secret",
+        "code",
+        "grant_type",
+        "stripe_user_id",
+        "scope",
+        "livemode"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Test with Stripe test mode, then switch to live mode",
+      "description": "Test the complete authorization and callback flow using Stripe test mode and test accounts before enabling production use. Confirm that the redirect URI matches exactly, the state value is validated, the connected account is stored correctly, and the requested scope is appropriate. Use live-mode credentials and live Connect configuration only when ready for real accounts.",
+      "url": "https://docs.stripe.com/connect/oauth-reference",
+      "agent_can_do": true,
+      "agent_note": "An agent can create a test checklist and help diagnose returned OAuth errors, but a human must execute authenticated Dashboard actions and production validation.",
+      "estimated_time": "10–20 min",
+      "fields": [
+        "Test-mode client ID",
+        "Live-mode client ID",
+        "Redirect URI",
+        "OAuth scope"
+      ]
+    }
+  ],
+  "common_blockers": [
+    {
+      "blocker": "redirect_uri mismatch",
+      "how_to_resolve": "Add the exact callback URL in Stripe Connect settings and send the identical value in the authorization request. Check scheme, hostname, path, trailing slash, and environment-specific domains."
+    },
+    {
+      "blocker": "Using the wrong Stripe mode or credentials",
+      "how_to_resolve": "Keep test and live configuration separate. Use the client ID and secret key from the same mode, and test with test-mode accounts before attempting live authorization."
+    },
+    {
+      "blocker": "Expecting OAuth to connect every Stripe account type",
+      "how_to_resolve": "Confirm the intended Connect account model. Stripe's OAuth flow is for connecting Standard accounts; Express and Custom account onboarding generally uses Connect account creation and Account Links rather than this OAuth authorization flow."
+    },
+    {
+      "blocker": "Secret key exposed in frontend code",
+      "how_to_resolve": "Perform the authorization-code exchange only from a trusted backend. Store Stripe secret keys and returned OAuth credentials in a secrets manager or encrypted server-side datastore."
+    },
+    {
+      "blocker": "Missing or unvalidated state parameter",
+      "how_to_resolve": "Generate a cryptographically random state value per authorization attempt, store it server-side or in a signed secure session, and reject callbacks whose state does not match."
+    },
+    {
+      "blocker": "Live-mode Connect capabilities are unavailable",
+      "how_to_resolve": "Complete any Stripe account activation, identity, business, or platform-profile requirements shown in the Dashboard. Stripe may require additional information depending on country, business model, and requested capabilities."
+    }
+  ],
+  "approval_details": null,
+  "agent_capabilities": {
+    "can_research_requirements": true,
+    "can_navigate_portal": true,
+    "can_fill_forms": false,
+    "can_submit_approval": false,
+    "summary": "An agent can research Stripe Connect OAuth requirements, generate authorization and callback implementation guidance, and help troubleshoot errors. A human must authenticate to Stripe, configure Connect settings, enter redirect URIs, retrieve credentials, accept applicable terms, and deploy secrets safely."
+  },
+  "evidence": {
+    "sources": [
+      {
+        "url": "https://docs.stripe.com/connect/oauth-reference",
+        "label": "Stripe Docs: Connect OAuth reference",
+        "type": "official"
+      },
+      {
+        "url": "https://docs.stripe.com/connect",
+        "label": "Stripe Docs: Connect overview",
+        "type": "official"
+      },
+      {
+        "url": "https://dashboard.stripe.com/settings/connect",
+        "label": "Stripe Dashboard: Connect settings",
+        "type": "official"
+      }
+    ],
+    "agent_navigated_urls": [
+      "https://docs.stripe.com/connect/oauth-reference",
+      "https://dashboard.stripe.com/settings/applications"
+    ],
+    "last_verified": "2026-10-20",
+    "confidence": "Medium",
+    "caveats": [
+      "The Stripe Dashboard is authenticated and may show different fields based on account country, activation status, Connect configuration, and Stripe product eligibility.",
+      "The browsing tools could not load Stripe documentation or Dashboard pages during this research session because of network/DNS and timeout errors; portal field names are based on Stripe's documented Connect OAuth flow and may differ slightly in the current Dashboard UI.",
+      "No general pre-publication OAuth app review was verified for Stripe Connect OAuth. However, Stripe can require account activation, verification, or additional platform information before live-mode use.",
+      "Composio-managed availability for Stripe was not independently verified in this session; this guide assumes a developer is configuring their own Stripe Connect OAuth credentials."
+    ],
+    "tested_notes": "Research attempted the requested searches and direct navigation to Stripe's OAuth reference and Dashboard application settings. Search requests failed due to a DNS error and direct fetches timed out, so no authenticated Dashboard form was interactively inspected. The guide is cross-referenced against Stripe's official Connect OAuth reference and Connect documentation URLs, with uncertainty explicitly noted."
+  }
+}

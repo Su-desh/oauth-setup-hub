@@ -25,7 +25,7 @@ That transition is opaque. OAuth setup complexity varies wildly: GitHub takes 15
 
 ### Prerequisites
 - Node.js 18+
-- OpenAI API key (GPT-4o)
+- OpenAI API key (`gpt-5.6-terra`)
 - Tavily API key (free tier: [tavily.com](https://tavily.com))
 
 ### Install
@@ -103,7 +103,7 @@ User submits: "Linear" or "https://linear.app"
        |
 1. POST /api/generate (SSE stream opens)
        |
-2. Agent loop (OpenAI GPT-4o + tools):
+2. Agent loop (OpenAI gpt-5.6-terra + tools):
    |- web_search: "[app] OAuth setup developer documentation"
    |- web_search: "[app] OAuth approval review requirements"
    |- fetch_url: developer portal page
