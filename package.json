@@ -2,11 +2,13 @@
   "name": "oauth-setup-hub",
   "version": "0.1.0",
   "private": true,
+  "description": "OAuth Setup Hub for Composio agent builders: automated research, approval intelligence, and interactive guides.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@tavily/core": "^0.7.14",
